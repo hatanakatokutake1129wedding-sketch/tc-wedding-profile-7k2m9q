@@ -224,3 +224,6 @@ section[id], main[id] { scroll-margin-top: var(--hdr); }
 .closed { max-width: 480px; min-height: 100vh; margin-inline: auto; padding: 24px; display: grid; place-content: center; gap: 14px; text-align: center; background: var(--paper); font-size: 13px; color: var(--ink-soft); }
 .closed-title { font: 400 30px var(--serif-en); letter-spacing: .06em; color: var(--ink); }
 .closed-title i { color: var(--gold); }
+
+/* ---- Spotify埋め込み ---- */
+.spotify { display: block; width: 100%; height: 352px; margin: 14px 0 20px; border: 0; border-radius: 12px; }

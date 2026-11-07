@@ -110,15 +110,26 @@
   var pl = C.playlist;
   $("#playlist-caption").innerHTML = pl.caption.split("\n").join("<br>");
   var pb = $("#playlist-body");
-  var covers = el("div", "covers");
-  for (var k = 0; k < 4; k++) covers.appendChild(photo(pl.covers[k], "", ""));
-  pb.appendChild(covers);
   pb.appendChild(el("h3", "pl-title", pl.title + '<span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'));
-  var tl = el("ol", "tracks");
-  pl.tracks.forEach(function (t, i) {
-    tl.appendChild(el("li", "", '<span class="no">' + (i + 1) + "</span><div><b>" + t.title + "</b><small>" + t.artist + "</small></div>"));
-  });
-  pb.appendChild(tl);
+  if (pl.spotifyId) {
+    /* Spotify公式の埋め込みプレイヤー(曲リスト付き) */
+    var frame = el("iframe", "spotify");
+    frame.src = "https://open.spotify.com/embed/playlist/" + pl.spotifyId + "?utm_source=generator" + (pl.spotifyTheme != null ? "&theme=" + pl.spotifyTheme : "");
+    frame.title = pl.title;
+    frame.height = 352;
+    frame.loading = "lazy";
+    frame.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+    pb.appendChild(frame);
+  } else {
+    var covers = el("div", "covers");
+    for (var k = 0; k < 4; k++) covers.appendChild(photo((pl.covers || [])[k], "", ""));
+    pb.insertBefore(covers, pb.firstChild);
+    var tl = el("ol", "tracks");
+    (pl.tracks || []).forEach(function (t, i) {
+      tl.appendChild(el("li", "", '<span class="no">' + (i + 1) + "</span><div><b>" + t.title + "</b><small>" + t.artist + "</small></div>"));
+    });
+    pb.appendChild(tl);
+  }
   var cta = el("a", "cta", pl.cta);
   cta.href = pl.url; cta.target = "_blank"; cta.rel = "noopener";
   pb.appendChild(cta);
